@@ -1,13 +1,12 @@
-# 1. TraffMonetizer'ın resmi motorunu kullan
+# 1. Resmi TraffMonetizer imajı (Alpine tabanlı)
 FROM traffmonetizer/cli_v2:latest
 
-# 2. Render'ın "uygulama yaşıyor mu?" kontrolü için gerekli araç (Python)
+# 2. Alpine Linux'ta paket yükleme komutu (apk)
 USER root
-RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/
+RUN apk update && apk add --no-cache python3
 
 # 3. Çalışma klasörü
 WORKDIR /app
 
-# 4. Sistemi başlatan ve Render'ı kandıran komut
-# Hem cihazı bağlar hem de 7860 portundan "ben buradayım" sinyali gönderir.
+# 4. Sistemi başlat (Render portu ile beraber)
 CMD ./TraffMonetizer.Cli start accept --token V5TrZciFMDzEtSxxAfFvEMewXNmlAe7rXHcPPSpMK0U= --device-name Render-PLW-1 & python3 -m http.server $PORT
